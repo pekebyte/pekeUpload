@@ -19,7 +19,7 @@
 		var defaults = {
 			onSubmit: 			false,
 			btnText: 		    "Browse files...",
-			url: 				"",
+			url: 				"upload.php",
 			theme: 				"bootstrap",
 			field: 				"file",
 		}; 
@@ -59,7 +59,6 @@
     					var percent = 100;
     					$('.pekeup-progress-bar:last').width(percent+'%');
         				$('.pekeup-progress-bar:last').text(percent+"%");
-        				alert(data);
     				},
     				xhr: function() {  // custom xhr
            			 	myXhr = $.ajaxSettings.xhr();
