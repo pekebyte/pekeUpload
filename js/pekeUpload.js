@@ -57,8 +57,8 @@
                     // dataType: 'json',
     				success: function(data){
     					var percent = 100;
-    					$('.pekeup-progress-bar:last').width(percent+'%');
-        				$('.pekeup-progress-bar:last').text(percent+"%");
+    					$('.pekeup-progress-bar:first').width(percent+'%');
+        				$('.pekeup-progress-bar:first').text(percent+"%");
     				},
     				xhr: function() {  // custom xhr
            			 	myXhr = $.ajaxSettings.xhr();
@@ -78,8 +78,8 @@
     			var total = e.total;
     			var loaded = e.loaded;
     			var percent = (e.loaded * 100)/e.total;
-        		$('.pekeup-progress-bar:last').width(percent+'%');
-        		$('.pekeup-progress-bar:last').text(percent+"%");
+        		$('.pekeup-progress-bar:first').width(percent+'%');
+        		$('.pekeup-progress-bar:first').text(percent+"%");
     		}
 		} 
 	};
