@@ -19,7 +19,7 @@ if (!empty($_FILES)) {
 	
 	if (in_array($fileParts['extension'],$fileTypes)) {
 		move_uploaded_file($tempFile,$targetFile);
-		echo '1 '.$targetFile;
+		echo '1';
 	} else {
 		echo 'Invalid file type.';
 	}
