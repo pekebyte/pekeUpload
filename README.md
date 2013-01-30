@@ -57,7 +57,7 @@ Some Features include:
 | showFilename | true | true/false | Sets if you want to show the file name on the uploader queue |
 | showPercent | true | true/false | Sets if you want to show the percent on the uploader queue |
 | showErrorAlerts | true | true/false | Sets if you want to show error alerts on the uploader queue |
-| allowedExtensions | "" | "ext1|ext2" | Sets the file extensions allowed to upload |
+| allowedExtensions | "" | "ext1" | Sets the file extensions allowed to upload |
 | invalidExtError | "Invalid File Type" | string | Sets the error message when the file has an unsupported extension |
 | maxSize | 0 | float | Set the file size limit in MB, 0 means no limit |
 | sizeError | "Size of the file is greather than allowed" | string | Sets the error message when the file is bigger than size allowed |
