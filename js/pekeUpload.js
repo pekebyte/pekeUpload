@@ -20,7 +20,7 @@
 			onSubmit: 			false,
 			btnText: 		    "Browse files...",
 			url: 				"upload.php",
-			theme: 				"bootstrap",
+			theme: 				"custom",
 			field: 				"file",
 			multi: 				true,
 			showFilename:       true,
@@ -45,6 +45,9 @@
 			//HTML code depends of theme
 			if (options.theme == "bootstrap"){
 			var html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <span class="icon-upload icon-white"></span> '+options.btnText+'</a><div class="pekecontainer"></div>';
+			}
+			if (options.theme == "custom"){
+				var html = '<a href="javascript:void(0)" class="btn-pekeupload">'+options.btnText+'</a><div class="pekecontainer"></div>';
 			}
 			obj.after(html);
 			obj.hide();
@@ -75,6 +78,9 @@
 			var error = true;
 			if (options.theme=="bootstrap"){
 				var htmlprogress = '<div class="file"><div class="filename"></div><div class="progress progress-striped"><div class="bar pekeup-progress-bar" style="width: 0%;"><span class="badge badge-info"></span></div></div></div>';
+			}
+			if (options.theme=="custom"){
+				var htmlprogress = '<div class="file"><div class="filename"></div><div class="progress-pekeupload"><div class="bar-pekeupload pekeup-progress-bar" style="width: 0%;"><span></span></div></div></div>';
 			}
 			obj.next('a').next('div').prepend(htmlprogress);
 			var formData = new FormData();
@@ -124,7 +130,7 @@
     			var percent = Number(((e.loaded * 100)/e.total).toFixed(2));
         		obj.next('a').next('div').find('.file').first().find('.pekeup-progress-bar:first').width(percent+'%');
         		}
-        		obj.next('a').next('div').find('.file').first().find('.pekeup-progress-bar:first').text(percent+"%");
+        		obj.next('a').next('div').find('.file').first().find('.pekeup-progress-bar:first').html('<center>'+percent+"%</center>");
     		}
 		}
 		//Validate master
@@ -137,6 +143,10 @@
 					if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
 						obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.invalidExtError+'</div>');
 						bootstrapclosenotification();
+					}
+					if((options.theme == "custom")&&(options.showErrorAlerts==true)){
+						obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close">&times;</button> '+options.invalidExtError+'</div>');
+						customclosenotification();
 					}
 					options.onFileError(file,options.invalidExtError);
 				}
@@ -151,6 +161,10 @@
 					if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
 						obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
 						bootstrapclosenotification();
+					}
+					if((options.theme == "custom")&&(options.showErrorAlerts==true)){
+						obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
+						customclosenotification();
 					}
 					options.onFileError(file,options.sizeError);
 				}
@@ -186,7 +200,12 @@
 			obj.next('a').next('div').find('.alert-error').click(function(){
 				$(this).remove();
 			})
-		} 
+		}
+		function customclosenotification(){
+			obj.next('a').next('div').find('.alert-pekeupload').click(function(){
+				$(this).remove();
+			})
+		}  
 	};
 
 })(jQuery);
