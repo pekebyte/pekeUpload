@@ -102,6 +102,15 @@
         				}
         				else{
         					options.onFileError(file,data);
+        					obj.next('a').next('div').find('.file:first').remove();
+        					if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
+        						obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
+        						bootstrapclosenotification();
+        					}
+        					if((options.theme == "custom")&&(options.showErrorAlerts==true)){
+        						obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
+        						customclosenotification();
+        					}
         					error = false;
         				}
     				},
@@ -199,12 +208,12 @@
 		function bootstrapclosenotification(){
 			obj.next('a').next('div').find('.alert-error').click(function(){
 				$(this).remove();
-			})
+			});
 		}
 		function customclosenotification(){
 			obj.next('a').next('div').find('.alert-pekeupload').click(function(){
 				$(this).remove();
-			})
+			});
 		}  
 	};
 

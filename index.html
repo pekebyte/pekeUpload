@@ -8,7 +8,9 @@
   <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
   <script type="text/javascript" src="js/pekeUpload.js"></script>
   <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function(){ 
+      $("#file").pekeUpload();
+      $("#file2").pekeUpload({theme:'bootstrap'});
     });
   </script>
   
