@@ -11,21 +11,60 @@
     $(document).ready(function(){ 
       $("#file").pekeUpload();
       $("#file2").pekeUpload({theme:'bootstrap'});
+      $("#file3").pekeUpload({theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif"});
+      $("#file4").pekeUpload({theme:'bootstrap', multi:false});
+      $("#file5").pekeUpload({theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif", onFileError:function(file,error){alert("error on file: "+file.name+" error: "+error+"")}});
+
     });
   </script>
   
 </head>
 <body>
 
-<div id="container">
+ <div class="container">
 
   <div id="header">
     <h1>PekeUpload jQuery Plugin</h1>
   </div>
 
   <div id="content">
-    <input id="file" type="file" name="file" />
-    <input id="file2" type="file" name="file" />
+    <h2>Demos</h2>
+    <div class="row">
+      <!--BASIC CONFIGURATION -->
+      <div class="span9">
+        <h4>1. - Basic configuration</h4>
+            <p>Sample Code:
+            <pre>$("#file").pekeUpload();</pre></p>
+          <input type="file" id="file" name="file" />
+      </div>
+       <!--Twitter Bootstrap Theme -->
+      <div class="span9">
+        <h4>2. - Twitter bootstrap theme</h4>
+            <p>Sample Code:
+            <pre>$("#file").pekeUpload({theme:'bootstrap'});</pre></p>
+          <input type="file" id="file2" name="file2" />
+      </div>
+      <!--Restrict extensions -->
+      <div class="span9">
+        <h4>3. - Restrict File Extensions</h4>
+            <p>Sample Code:
+            <pre>$("#file").pekeUpload({theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif"});</pre></p>
+          <input type="file" id="file3" name="file3" />
+       </div>
+       <div class="span9">
+        <h4>4. - Single file upload</h4>
+            <p>Sample Code:
+            <pre>$("#file").pekeUpload({theme:'bootstrap', multi: false});</pre></p>
+          <input type="file" id="file4" name="file4" />
+       </div>
+       <div class="span9">
+        <h4>5. - Alert on error</h4>
+            <p>Sample Code:
+            <pre>$("#file5").pekeUpload({theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif", onFileError:function(file,error){alert("error on file: "+file.name+" error: "+error+"")}});</pre></p>
+          <input type="file" id="file5" name="file5" />
+       </div>
+      </div>
+</div>
   </div>
 
 </div>
