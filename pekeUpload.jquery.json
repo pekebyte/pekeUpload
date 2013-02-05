@@ -3,8 +3,8 @@
     "title": "pekeUpload",
     "description": "jQuery plugin for color manipulation and animation support.",
     "keywords": [
-        "color",
-        "animation"
+        "file",
+        "uploader"
     ],
     "version": "1.0",
     "author": {
