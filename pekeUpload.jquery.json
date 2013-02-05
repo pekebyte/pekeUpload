@@ -1,10 +1,13 @@
 {
     "name": "pekeUpload",
     "title": "pekeUpload",
-    "description": "jQuery plugin for color manipulation and animation support.",
+    "description": "jQuery html5 file uploader plugin",
     "keywords": [
         "file",
-        "uploader"
+        "html5",
+        "uploader",
+        "upload",
+        "bootstrap"
     ],
     "version": "1.0.1",
     "author": {
