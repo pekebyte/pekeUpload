@@ -1,0 +1,34 @@
+{
+    "name": "pekeUpload",
+    "title": "pekeUpload",
+    "description": "jQuery plugin for color manipulation and animation support.",
+    "keywords": [
+        "color",
+        "animation"
+    ],
+    "version": "1.0",
+    "author": {
+        "name": "Pedro Molina",
+        "url": "http://www.pekebyte.com/"
+    },
+    "maintainers": [
+        {
+            "name": "Pedro Molina",
+            "email": "pedrom@pekebyte.com",
+            "url": "http://www.pekebyte.com/"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/pekebyte/pekeUpload/blob/master/MIT-LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/pekebyte/pekeUpload/issues",
+    "homepage": "https://github.com/pekebyte/pekeUpload",
+    "docs": "https://github.com/pekebyte/pekeUpload",
+    "download": "https://github.com/pekebyte/pekeUpload",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
