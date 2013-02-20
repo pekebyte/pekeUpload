@@ -52,6 +52,7 @@ Some Features include:
 | url| "upload.php" | string | Set the url of upload script |
 | theme | "custom" | "custom"/"bootstrap" | Set the theme for the uploader, "custom" if you want to use your custom css, or "bootstrap" if you prefer the Twitter bootstrap-ready functionality |
 | field | "file" | string | Set the name for the POST data field, this is useful for the server-side script |
+| data | null | {var1:"value"} | Set POST additional data associated to the file |
 | multi | true | true/false | Sets if you want multiple file uploads (true) or a single file upload (false) |
 | showFilename | true | true/false | Sets if you want to show the file name on the uploader queue |
 | showPercent | true | true/false | Sets if you want to show the percent on the uploader queue |

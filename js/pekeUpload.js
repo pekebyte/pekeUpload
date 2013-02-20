@@ -32,7 +32,7 @@
       maxSize:      0,
       sizeError:      "Size of the file is greather than allowed",
       onFileError:        function(file,error){},
-      onFileSuccess:      function(file,data){},
+      onFileSuccess:      function(file,data){}
     };
 
     var options = $.extend(defaults, options);
@@ -200,7 +200,6 @@
     function validateSize(){
       if (file.size > options.maxSize){
         return false;
-        alert('aqui hay un error bitch');
       }
       else{
         return true;
