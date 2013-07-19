@@ -1,5 +1,5 @@
 /*
- *  PekeUpload 1.0 - jQuery plugin
+ *  PekeUpload 1.0.6 - jQuery plugin
  *  written by Pedro Molina
  *  http://www.pekebyte.com/
  *
@@ -106,11 +106,12 @@
                   options.onFileError(file,data);
                   obj.next('a').next('div').find('.file:first').remove();
                   if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
-                    obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
+                    obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+data+'</div>');
                     bootstrapclosenotification();
                   }
                   if((options.theme == "custom")&&(options.showErrorAlerts==true)){
-                    obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
+
+                    obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+data+'</div>');
                     customclosenotification();
                   }
                   error = false;
