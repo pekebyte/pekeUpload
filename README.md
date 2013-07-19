@@ -12,6 +12,10 @@ Some Features include:
 5.  Real-Time Progress Indicators
 6.  And others more...
 
+Do you like this plugin?
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8MW4KWSLB75YA)
+
 ###### Requirements
 1.  jQuery 1.4.x or greater
 2.  Web browser capable to render HTML5
