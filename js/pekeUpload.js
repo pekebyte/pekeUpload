@@ -161,6 +161,7 @@
             customclosenotification();
           }
           options.onFileError(file,options.invalidExtError);
+          return canUpload;
         }
         else{
           canUpload = true;
@@ -179,6 +180,7 @@
             customclosenotification();
           }
           options.onFileError(file,options.sizeError);
+          return canUpload;
         }
         else{
           canUpload = true;
