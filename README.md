@@ -1,3 +1,4 @@
+[![NPM](https://nodei.co/npm/pekeupload.png)](https://nodei.co/npm/pekeupload/)
 pekeUpload
 ==========
 ###### What is pekeUpload?
