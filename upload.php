@@ -16,12 +16,18 @@ if (!empty($_FILES)) {
 	// Validate the file type
 	$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
 	$fileParts = pathinfo($_FILES['file']['name']);
-	
+	$response = array ();
 	if (in_array($fileParts['extension'],$fileTypes)) {
-		move_uploaded_file($tempFile,$targetFile);
-		echo '1';
+		// move_uploaded_file($tempFile,$targetFile);
+		// $response['success'] = 1;
+		// foreach ($_POST as $key => $value){
+		// 	$response[$key] = $value;
+		// }
+		echo 1;
 	} else {
-		echo 'Invalid file type.';
+		$response['success'] = 0;
+		$response['error'] = 'Invalid file type.';
+		echo json_encode($response);
 	}
 }
 ?>

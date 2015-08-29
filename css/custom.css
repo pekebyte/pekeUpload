@@ -100,6 +100,7 @@
                         transparent 75%, transparent);
     
     box-shadow:inset 0px 2px 8px rgba(255, 255, 255, .5), inset -1px -1px 0px rgba(0, 0, 0, .2);
+    text-align: center;
 }
 .alert-pekeupload {
   padding: 8px 35px 8px 14px;
@@ -116,4 +117,24 @@
 }
 .alert-pekeupload .close{
     margin-top: 2px;
+}
+
+.pekeitem_preview{
+    float:left;
+    width:20%;
+}
+.pekerow .file{
+    float:left;
+    width:80%;
+}
+.pekerow{
+    overflow: hidden;
+    width: 100%;
+}
+.pekeupload-drag-area{
+    width: 100%;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color:#f0f0f0;
 }
