@@ -17,8 +17,16 @@
 
     // default configuration properties
     var defaults = {
+      dragSupport:        false,
+      dragText:           'Drag and Drop your files here',
+      bootstrap:          false,
+      btnText:            'Browse files...',
+
+
+
       onSubmit:           false,
-      btnText:            "Browse files...",
+      
+
       url:                "upload.php",
       theme:              "custom",
       field:              "file",
@@ -42,22 +50,36 @@
       files : [],
       container: null,
       init : function(){
+        this.replacehtml();
+      },
+      replacehtml: function(){
         var html = null;
-        switch(options.theme){
-          case 'bootstrap':
-            html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <i class="glyphicon glyphicon-upload"></i> '+options.btnText+'</a><div class="pekecontainer"></div>';
+        switch(options.dragSupport){
+          case true:
+            switch(options.bootstrap){
+              case true:
+                html = '<div class="well well-lg" style="cursor:pointer"><h4>'+options.dragText+'</h4></div>';
+              break;
+              case false:
+                html = '<div class="pekeupload-drag-area" syle="cursor:pointer"><h4>'+options.dragText+'</h4></div>';
+              break;
+            }
           break;
-          default:
-            html = '<a href="javascript:void(0)" class="btn-pekeupload">'+options.btnText+'</a><div class="pekecontainer"></div>';
+          case false:
+            switch(options.bootstrap){
+              case true:
+                html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <i class="glyphicon glyphicon-upload"></i> '+options.btnText+'</a><div class="pekecontainer"></div>';
+              break;
+              case false:
+                html = '<a href="javascript:void(0)" class="pekeupload-btn-file">'+options.btnText+'</a><div class="pekecontainer"></div>';
+              break;
+            }
           break;
         }
         this.obj.after(html);
         this.obj.hide();
         this.container = this.obj.next('div.pekecontainer');
       },
-      updatecontainers: function(){
-
-      }
     };
     
     //Do the magic
