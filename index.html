@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>PekeUpload by pekebyte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">PekeUpload</h1>
+      <h2 class="project-tagline"> jQuery html5 file uploader plugin</h2>
+      <a href="https://github.com/pekebyte/pekeUpload" class="btn">View on GitHub</a>
+      <a href="https://github.com/pekebyte/pekeUpload/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/pekebyte/pekeUpload/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="pekeupload" class="anchor" href="#pekeupload" aria-hidden="true"><span class="octicon octicon-link"></span></a>pekeUpload</h1>
+
+<h2>
+<a id="what-is-pekeupload" class="anchor" href="#what-is-pekeupload" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is pekeUpload?</h2>
+
+<p>is a jQuery plugin that allows you to easily add multiple or single file upload functionality to your website. This plugin uses html5 only.</p>
+
+<p>Some Features include:</p>
+
+<ol>
+<li> Theming (Twitter Bootstrap ready)</li>
+<li> Set File size limit</li>
+<li> Set File extensions restrictions</li>
+<li> Set custom error messages</li>
+<li> Real-Time Progress Indicators</li>
+<li> Drag &amp; Drop File Upload support</li>
+<li> Preview your media file (images,audios and videos)</li>
+<li> And others more...</li>
+</ol>
+
+<p>Do you like this plugin?</p>
+
+<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=8MW4KWSLB75YA"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate"></a></p>
+
+<h2>
+<a id="new-version-20" class="anchor" href="#new-version-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>New Version 2.0!!</h2>
+
+<p>This version has been re-coded from scratch, and include new functionalities and has been updated to support jQuery 2.x.x and Bootstrap 3.x.x, there has been a lot of changes from v 1.0.6. Here's some of the new features:</p>
+
+<ol>
+<li>New dragMode feature, you can now support drag &amp; drop uploads</li>
+<li>Updated support for the latest libraries of jQuery and Twitter Bootstrap</li>
+<li>You can return data from the server-side script</li>
+<li>Preview Option, you can now on the queue view a preview of the file that you are uploading</li>
+<li>Set limit of the file uploads</li>
+</ol>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ol>
+<li> jQuery 1.4.x or greater</li>
+<li> Web browser capable to render HTML5</li>
+<li> If you're using Bootstrap, you will need bootstrap.css from v3.0.x or greater</li>
+<li> A server processing script for the files</li>
+</ol>
+
+<h2>
+<a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementation</h2>
+
+<ol>
+<li> Download pekeUpload zip</li>
+<li> Unzip pekeUpload zip</li>
+<li>Then add a reference to the jQuery library.<br>
+</li>
+</ol>
+
+<pre><code> &lt;script type="text/javascript" src="js/jquery-2.1.4.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<ol>
+<li> Below the reference to jQuery, add a reference to the pekeUpload script<br>
+</li>
+</ol>
+
+<pre><code> &lt;script type="text/javascript" src="js/pekeUpload.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<ol>
+<li> On the page, add a file input.<br>
+</li>
+</ol>
+
+<pre><code> &lt;input id="file" type="file" name="file" /&gt;
+</code></pre>
+
+<ol>
+<li> Initialize pekeUpload on the file input<br>
+</li>
+</ol>
+
+<pre><code>  $("#file").pekeUpload();
+</code></pre>
+
+<h2>
+<a id="plugin-options" class="anchor" href="#plugin-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plugin Options</h2>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dragMode</td>
+<td>false</td>
+<td>true/false</td>
+<td>Set the mode of uploading the files, if you prefer the user drags &amp; drops, or to click on a button and browse for the file</td>
+</tr>
+<tr>
+<td>dragText</td>
+<td>"Drag and Drop your files here"</td>
+<td>string</td>
+<td>Set the text for the drag &amp; drop area</td>
+</tr>
+<tr>
+<td>bootstrap</td>
+<td>false</td>
+<td>true/false</td>
+<td>Set the theme for the uploader, false if you want to use your custom css, or true if you prefer the Twitter bootstrap-ready functionality, you can check css/custom.css to customize your uploader</td>
+</tr>
+<tr>
+<td>btnText</td>
+<td>"Browse files..."</td>
+<td>string</td>
+<td>Set the text of the upload button</td>
+</tr>
+<tr>
+<td>allowedExtensions</td>
+<td>""</td>
+<td>"ext1"</td>
+<td>Sets the file extensions allowed to upload</td>
+</tr>
+<tr>
+<td>invalidExtError</td>
+<td>"Invalid File Type"</td>
+<td>string</td>
+<td>Sets the error message when the file has an unsupported extension</td>
+</tr>
+<tr>
+<td>maxSize</td>
+<td>0</td>
+<td>float</td>
+<td>Set the file size limit in MB, 0 means no limit</td>
+</tr>
+<tr>
+<td>sizeError</td>
+<td>"Size of the file is greather than allowed"</td>
+<td>string</td>
+<td>Sets the error message when the file is bigger than size allowed</td>
+</tr>
+<tr>
+<td>showPreview</td>
+<td>true</td>
+<td>true/false</td>
+<td>Sets if you want to show a preview (if the file is an audio,image or video) on the uploader queue</td>
+</tr>
+<tr>
+<td>showFilename</td>
+<td>true</td>
+<td>true/false</td>
+<td>Sets if you want to show the file name on the uploader queue</td>
+</tr>
+<tr>
+<td>showPercent</td>
+<td>true</td>
+<td>true/false</td>
+<td>Sets if you want to show the percent on the uploader queue</td>
+</tr>
+<tr>
+<td>showErrorAlerts</td>
+<td>true</td>
+<td>true/false</td>
+<td>Sets if you want to show error alerts on the uploader queue</td>
+</tr>
+<tr>
+<td>errorOnResponse</td>
+<td>"There has been an error uploading your file"</td>
+<td>string</td>
+<td>Sets the message when the file is uploaded and the response script returns that there is an error but a error message on the response was not found</td>
+</tr>
+<tr>
+<td>onSubmit</td>
+<td>false</td>
+<td>true/false</td>
+<td>Gives you the option of upload the files when the files are selected or when you submit the form.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>"upload.php"</td>
+<td>string</td>
+<td>Set the url of upload script</td>
+</tr>
+<tr>
+<td>data</td>
+<td>null</td>
+<td>{var1:"value"}</td>
+<td>Set POST additional data associated to the file</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>0</td>
+<td>integer</td>
+<td>Sets the limits of files that an user can uploads, 0 is unlimited</td>
+</tr>
+<tr>
+<td>limitError</td>
+<td>"You have reached the limit of files that you can upload"</td>
+<td>string</td>
+<td>Sets the error message when a user tried to upload more files than the limit</td>
+</tr>
+<tr>
+<td>onFileError</td>
+<td>function(file,error){}</td>
+<td>function(file,error){}</td>
+<td>Event triggered when some error ocurs, returns error (string), file (object). file returns file.name and file.size</td>
+</tr>
+<tr>
+<td>onFileSuccess</td>
+<td>function(file,data){}</td>
+<td>function(file,data){}</td>
+<td>Event triggered when the file has been uploaded succesfully, returns data (string), file (object). file returns file.name and file.size</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="sever-side-script-considerations" class="anchor" href="#sever-side-script-considerations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sever side script considerations</h2>
+
+<p>The file is received by the server side script with the name of the input, for example: if you set that the name of the input is image, then you must expect on the server-side script an input called image.</p>
+
+<p>The server side script must return '1' or '{success:1}', if you wish to attach more data to the response just print a json string, if you want to set your custom error message, return the error property on the json string. See upload.php</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/pekebyte/pekeUpload">PekeUpload</a> is maintained by <a href="https://github.com/pekebyte">pekebyte</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
