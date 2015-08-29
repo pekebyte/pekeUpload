@@ -28,7 +28,7 @@
         }
     ],
     "bugs": "https://github.com/pekebyte/pekeUpload/issues",
-    "homepage": "https://github.com/pekebyte/pekeUpload",
+    "homepage": "http://pekebyte.github.io/pekeUpload/",
     "docs": "https://github.com/pekebyte/pekeUpload",
     "download": "https://github.com/pekebyte/pekeUpload",
     "dependencies": {
