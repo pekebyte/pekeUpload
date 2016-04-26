@@ -21,6 +21,7 @@
     "url": "https://github.com/pekebyte/pekeUpload/issues"
   },
   "homepage": "https://github.com/pekebyte/pekeUpload",
+  "main": "./js/pekeUpload.min.js",
   "dependencies": {
     "jquery":">=1.4.3"
   }
