@@ -1,9 +1,9 @@
 /*
- *  PekeUpload 1.0.6 - jQuery plugin
+ *  PekeUpload 2.0 - jQuery plugin
  *  written by Pedro Molina
  *  http://www.pekebyte.com/
  *
- *  Copyright (c) 2013 Pedro Molina (http://pekebyte.com)
+ *  Copyright (c) 2015 Pedro Molina (http://pekebyte.com)
  *  Dual licensed under the MIT (MIT-LICENSE.txt)
  *  and GPL (GPL-LICENSE.txt) licenses.
  *
@@ -12,213 +12,360 @@
  *
  */
 (function($) {
-
-  $.fn.pekeUpload = function(options){
-
-    // default configuration properties
-    var defaults = {
-      onSubmit:       false,
-      btnText:        "Browse files...",
-      url:        "upload.php",
-      theme:        "custom",
-      field:        "file",
-      data:         null,
-      multi:        true,
-      showFilename:       true,
-      showPercent:        true,
-      showErrorAlerts:    true,
-      allowedExtensions:  "",
-      invalidExtError:    "Invalid File Type",
-      maxSize:      0,
-      sizeError:      "Size of the file is greather than allowed",
-      onFileError:        function(file,error){},
-      onFileSuccess:      function(file,data){}
-    };
-
-    var options = $.extend(defaults, options);
-
-    //Main function
-    var obj;
-    var file = new Object();
-    var fileinput = this;
-    this.each(function() {
-      obj = $(this);
-      //HTML code depends of theme
-      if (options.theme == "bootstrap"){
-      var html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <span class="icon-upload icon-white"></span> '+options.btnText+'</a><div class="pekecontainer"></div>';
-      }
-      if (options.theme == "custom"){
-        var html = '<a href="javascript:void(0)" class="btn-pekeupload">'+options.btnText+'</a><div class="pekecontainer"></div>';
-      }
-      obj.after(html);
-      obj.hide();
-      //Event when clicked the newly created link
-      obj.next('a').click(function(){
-        obj.click();
-      });
-      //Event when user select a file
-      obj.change(function(){
-        file.name = obj.val().split('\\').pop();
-        file.size = (obj[0].files[0].size/1024)/1024;
-        if (validateresult()==true){
-          if (options.onSubmit==false){
-            UploadFile();
-          }
-          else{
-            obj.next('a').next('div').prepend('<br /><span class="filename">'+file.name+'</span>');
-            obj.parent('form').bind('submit',function(){
-              obj.next('a').next('div').html('');
-              UploadFile();
-              });
-          }
-        }
-      });
-    });
-    //Function that uploads a file
-    function UploadFile(){
-      var error = true;
-      if (options.theme=="bootstrap"){
-        var htmlprogress = '<div class="file"><div class="filename"></div><div class="progress progress-striped"><div class="bar pekeup-progress-bar" style="width: 0%;"><span class="badge badge-info"></span></div></div></div>';
-      }
-      if (options.theme=="custom"){
-        var htmlprogress = '<div class="file"><div class="filename"></div><div class="progress-pekeupload"><div class="bar-pekeupload pekeup-progress-bar" style="width: 0%;"><span></span></div></div></div>';
-      }
-      obj.next('a').next('div').prepend(htmlprogress);
-      var formData = new FormData();
-      formData.append(options.field, obj[0].files[0]);
-      formData.append('data', options.data);
-      $.ajax({
-            url: options.url,
-            type: 'POST',
-            data: formData,
-                    // dataType: 'json',
-            success: function(data){
-              var percent = 100;
-              obj.next('a').next('div').find('.pekeup-progress-bar:first').width(percent+'%');
-                obj.next('a').next('div').find('.pekeup-progress-bar:first').text(percent+"%");
-                if (data==1 || data.success==1){
-                  if (options.multi==false){
-                    obj.attr('disabled','disabled');
-                  }
-                  options.onFileSuccess(file,data);
+    $.fn.pekeUpload = function(options) {
+        // default configuration properties
+        var defaults = {
+            dragMode: false,
+            dragText: "Drag and Drop your files here",
+            bootstrap: false,
+            btnText: "Browse files...",
+            allowedExtensions: "",
+            invalidExtError: "Invalid File Type",
+            maxSize: 0,
+            sizeError: "Size of the file is greather than allowed",
+            showPreview: true,
+            showFilename: true,
+            showPercent: true,
+            showErrorAlerts: true,
+            errorOnResponse: "There has been an error uploading your file",
+            onSubmit: false,
+            url: "upload.php",
+            data: null,
+            limit: 0,
+            limitError: "You have reached the limit of files that you can upload",
+            onFileError: function(file, error) {},
+            onFileSuccess: function(file, data) {}
+        };
+        var options = $.extend(defaults, options);
+        var pekeUpload = {
+            obj: $(this),
+            files: [],
+            uparea: null,
+            container: null,
+            uploadedfiles: 0,
+            hasErrors: false,
+            init: function() {
+                this.replacehtml();
+                this.uparea.on("click", function() {
+                    pekeUpload.selectfiles();
+                });
+                ///Handle events when drag
+                if (options.dragMode) {
+                    this.handledragevents();
+                } else {
+                    this.handlebuttonevents();
                 }
-                else{
-                  options.onFileError(file,data);
-                  obj.next('a').next('div').find('.file:first').remove();
-                  if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
-                    obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+data+'</div>');
-                    bootstrapclosenotification();
-                  }
-                  if((options.theme == "custom")&&(options.showErrorAlerts==true)){
-
-                    obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+data+'</div>');
-                    customclosenotification();
-                  }
-                  error = false;
+                //Dismiss all warnings
+                $(document).on("click", ".pkwrncl", function() {
+                    $(this).parent("div").remove();
+                });
+                //Bind event if is on Submit
+                if (options.onSubmit) {
+                    this.handleFormSubmission();
                 }
             },
-            xhr: function() {  // custom xhr
-                  myXhr = $.ajaxSettings.xhr();
-                  if(myXhr.upload){ // check if upload property exists
-                    myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // for handling the progress of the upload
-                }
-                return myXhr;
-              },
-            cache: false,
-                  contentType: false,
-                  processData: false
-          });
-      return error;
-    }
-    //Function that updates bars progress
-    function progressHandlingFunction(e){
-        if(e.lengthComputable){
-          var total = e.total;
-          var loaded = e.loaded;
-          if (options.showFilename==true){
-          obj.next('a').next('div').find('.file').first().find('.filename:first').text(file.name);
-          }
-          if (options.showPercent==true){
-          var percent = Number(((e.loaded * 100)/e.total).toFixed(2));
-            obj.next('a').next('div').find('.file').first().find('.pekeup-progress-bar:first').width(percent+'%');
-            }
-            obj.next('a').next('div').find('.file').first().find('.pekeup-progress-bar:first').html('<center>'+percent+"%</center>");
-        }
-    }
-    //Validate master
-    function validateresult(){
-      var canUpload = true;
-      if (options.allowedExtensions!=""){
-        var validationresult = validateExtension();
-        if (validationresult == false){
-          canUpload = false;
-          if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
-            obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.invalidExtError+'</div>');
-            bootstrapclosenotification();
-          }
-          if((options.theme == "custom")&&(options.showErrorAlerts==true)){
-            obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close">&times;</button> '+options.invalidExtError+'</div>');
-            customclosenotification();
-          }
-          options.onFileError(file,options.invalidExtError);
-          return canUpload;
-        }
-        else{
-          canUpload = true;
-        }
-      }
-      if (options.maxSize>0){
-        var validationresult = validateSize();
-        if (validationresult == false){
-          canUpload = false;
-          if((options.theme == "bootstrap")&&(options.showErrorAlerts==true)){
-            obj.next('a').next('div').prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
-            bootstrapclosenotification();
-          }
-          if((options.theme == "custom")&&(options.showErrorAlerts==true)){
-            obj.next('a').next('div').prepend('<div class="alert-pekeupload"><button type="button" class="close" data-dismiss="alert">&times;</button> '+options.sizeError+'</div>');
-            customclosenotification();
-          }
-          options.onFileError(file,options.sizeError);
-          return canUpload;
-        }
-        else{
-          canUpload = true;
-        }
-      }
-      return canUpload
-    }
-    //Validate extension of file
-    function validateExtension(){
-      var ext = obj.val().split('.').pop().toLowerCase();
-      var allowed = options.allowedExtensions.split("|");
-      if($.inArray(ext, allowed) == -1) {
-          return false;
-      }
-      else{
-        return true;
-      }
-    }
-    //Validate Size of the file
-    function validateSize(){
-      if (file.size > options.maxSize){
-        return false;
-      }
-      else{
-        return true;
-      }
-    }
-    //Function that allows close alerts of bootstap
-    function bootstrapclosenotification(){
-      obj.next('a').next('div').find('.alert-error').click(function(){
-        $(this).remove();
-      });
-    }
-    function customclosenotification(){
-      obj.next('a').next('div').find('.alert-pekeupload').click(function(){
-        $(this).remove();
-      });
-    }
-  };
+            replacehtml: function() {
+                var html = null;
+                switch (options.dragMode) {
+                  case true:
+                    switch (options.bootstrap) {
+                      case true:
+                        html = '<div class="well well-lg pkuparea pkdragarea" style="cursor:pointer"><h4>' + options.dragText + "</h4></div>";
+                        break;
 
+                      case false:
+                        html = '<div class="pekeupload-drag-area pkuparea pkdragarea" style="cursor:pointer"><h4>' + options.dragText + "</h4></div>";
+                        break;
+                    }
+                    break;
+
+                  case false:
+                    switch (options.bootstrap) {
+                      case true:
+                        html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload pkuparea"> <i class="glyphicon glyphicon-upload"></i> ' + options.btnText + "</a>";
+                        break;
+
+                      case false:
+                        html = '<a href="javascript:void(0)" class="pekeupload-btn-file pkuparea">' + options.btnText + "</a>";
+                        break;
+                    }
+                    break;
+                }
+                this.obj.hide();
+                this.uparea = $(html).insertAfter(this.obj);
+                this.container = $('<div class="pekecontainer"><ul></ul></div>').insertAfter(this.uparea);
+            },
+            selectfiles: function() {
+                this.obj.click();
+            },
+            handlebuttonevents: function() {
+                $(document).on("change", this.obj, function() {
+                    pekeUpload.checkFile(pekeUpload.obj[0].files[0]);
+                });
+            },
+            handledragevents: function() {
+                $(document).on("dragenter", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+                $(document).on("dragover", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+                $(document).on("drop", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+                this.uparea.on("dragenter", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).css("border", "2px solid #0B85A1");
+                });
+                this.uparea.on("dragover", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+                this.uparea.on("drop", function(e) {
+                    $(this).css("border", "2px dotted #0B85A1");
+                    e.preventDefault();
+                    var files = e.originalEvent.dataTransfer.files;
+                    for (var i = 0; i < files.length; i++) {
+                        pekeUpload.checkFile(files[i]);
+                    }
+                });
+            },
+            checkFile: function(file) {
+                error = this.validateFile(file);
+                if (error) {
+                    if (options.showErrorAlerts) {
+                        this.addWarning(error);
+                    }
+                    this.hasErrors = true;
+                    options.onFileError(file, error);
+                } else {
+                    this.files.push(file);
+                    if (this.files.length > options.limit && options.limit > 0) {
+                        this.files.splice(this.files.length - 1, 1);
+                        if (options.showErrorAlerts) {
+                            this.addWarning(options.limitError, this.obj);
+                        }
+                        this.hasErrors = true;
+                        options.onFileError(file, error);
+                    } else {
+                        this.addRow(file);
+                        if (options.onSubmit == false) {
+                            this.upload(file, this.files.length - 1);
+                        }
+                    }
+                }
+            },
+            addWarning: function(error, c) {
+                var html = null;
+                switch (options.bootstrap) {
+                  case true:
+                    html = '<div class="alert alert-danger"><button type="button" class="close pkwrncl" data-dismiss="alert">&times;</button> ' + error + "</div>";
+                    break;
+
+                  case false:
+                    html = '<div class="alert-pekeupload"><button type="button" class="close pkwrncl" data-dismiss="alert">&times;</button> ' + error + "</div>";
+                    break;
+                }
+                if (!c) {
+                    this.container.append(html);
+                } else {
+                    $(html).insertBefore(c);
+                }
+            },
+            validateFile: function(file) {
+                if (!this.checkExtension(file)) {
+                    return options.invalidExtError;
+                }
+                if (!this.checkSize(file)) {
+                    return options.sizeError;
+                }
+                return null;
+            },
+            checkExtension: function(file) {
+                if (options.allowedExtensions == "") {
+                    return true;
+                }
+                var ext = file.name.split(".").pop().toLowerCase();
+                var allowed = options.allowedExtensions.split("|");
+                if ($.inArray(ext, allowed) == -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            checkSize: function(file) {
+                if (options.maxSize == 0) {
+                    return true;
+                }
+                if (file.size > options.maxSize) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            addRow: function(file) {
+                var i = this.files.length - 1;
+                switch (options.bootstrap) {
+                  case true:
+                    var newRow = $('<div class="row pkrw" rel="' + i + '"></div>').appendTo(this.container);
+                    if (options.showPreview) {
+                        var prev = $('<div class="col-lg-2 col-md-2 col-xs-4"></div>').appendTo(newRow);
+                        this.previewFile(prev, file);
+                    }
+                    var finfo = $('<div class="col-lg-10 col-md-10 col-xs-10"></div>').appendTo(newRow);
+                    if (options.showFilename) {
+                        finfo.append('<div class="filename">' + file.name + "</div>");
+                    }
+                    var progress = $('<div class="progress"><div class="pkuppbr progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;"></div></div>').appendTo(finfo);
+                    if (options.showPercent) {
+                        progress.find("div.progress-bar").text("0%");
+                    }
+                    break;
+
+                  case false:
+                    var newRow = $('<div class="pekerow pkrw" rel="' + i + '"></div>').appendTo(this.container);
+                    if (options.showPreview) {
+                        var prev = $('<div class="pekeitem_preview"></div>').appendTo(newRow);
+                        this.previewFile(prev, file);
+                    }
+                    var finfo = $('<div class="file"></div>').appendTo(newRow);
+                    if (options.showFilename) {
+                        finfo.append('<div class="filename">' + file.name + "</div>");
+                    }
+                    var progress = $('<div class="progress-pekeupload"><div class="pkuppbr bar-pekeupload pekeup-progress-bar" style="min-width: 2em;width:0%"><span></span></div></div>').appendTo(finfo);
+                    if (options.showPercent) {
+                        progress.find("div.bar-pekeupload").text("0%");
+                    }
+                    break;
+                }
+            },
+            previewFile: function(container, file) {
+                var type = file.type.split("/")[0];
+                switch (type) {
+                  case "image":
+                    var fileUrl = window.URL.createObjectURL(file);
+                    var prev = $('<img class="thumbnail" src="' + fileUrl + '" height="64" />').appendTo(container);
+                    break;
+
+                  case "video":
+                    var fileUrl = window.URL.createObjectURL(file);
+                    var prev = $('<video src="' + fileUrl + '" width="100%" controls></video>').appendTo(container);
+                    break;
+
+                  case "audio":
+                    var fileUrl = window.URL.createObjectURL(file);
+                    var prev = $('<audio src="' + fileUrl + '" width="100%" controls></audio>').appendTo(container);
+                    break;
+
+                  default:
+                    if (options.bootstrap) {
+                        var prev = $('<i class="glyphicon glyphicon-file"></i>').appendTo(container);
+                    } else {
+                        var prev = $('<div class="pekeupload-item-file"></div>').appendTo(container);
+                    }
+                    break;
+                }
+            },
+            upload: function(file, pos) {
+                var formData = new FormData();
+                formData.append(this.obj.attr("name"), file);
+                for (var key in options.data) {
+                    formData.append(key, options.data[key]);
+                }
+                $.ajax({
+                    url: options.url,
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data == 1 || data.success == 1) {
+                            pekeUpload.files[pos] = null;
+                            $('div.row[rel="' + pos + '"]').find(".pkuppbr").css("width", "100%");
+                            options.onFileSuccess(file, data);
+                        } else {
+                            pekeUpload.files.splice(pos, 1);
+                            var err = null;
+                            if (error in json) {
+                                err = null;
+                            } else {
+                                err = options.errorOnResponse;
+                            }
+                            if (options.showErrorAlerts) {
+                                pekeUpload.addWarning(err, $('div.row[rel="' + pos + '"]'));
+                            }
+                            $('div.row[rel="' + pos + '"]').remove();
+                            pekeUpload.hasErrors = true;
+                            options.onFileError(file, err);
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        pekeUpload.files.splice(pos, 1);
+                        if (options.showErrorAlerts) {
+                            pekeUpload.addWarning(thrownError, $('div.pkrw[rel="' + pos + '"]'));
+                        }
+                        pekeUpload.hasErrors = true;
+                        options.onFileError(file, thrownError);
+                        $('div.pkrw[rel="' + pos + '"]').remove();
+                    },
+                    xhr: function() {
+                        myXhr = $.ajaxSettings.xhr();
+                        if (myXhr.upload) {
+                            myXhr.upload.addEventListener("progress", function(e) {
+                                pekeUpload.handleProgress(e, pos);
+                            }, false);
+                        }
+                        return myXhr;
+                    },
+                    complete: function() {
+                        if (options.onSubmit) {
+                            pekeUpload.uploadedfiles++;
+                            if (pekeUpload.uploadedfiles == pekeUpload.files.length && pekeUpload.hasErrors == false) {
+                                pekeUpload.obj.remove();
+                                pekeUpload.obj.parent("form").submit();
+                            }
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            },
+            handleProgress: function(e, pos) {
+                if (e.lengthComputable) {
+                    var total = e.total;
+                    var loaded = e.loaded;
+                    var percent = Number((e.loaded * 100 / e.total).toFixed(2));
+                    var progressbar = $('div.pkrw[rel="' + pos + '"]').find(".pkuppbr");
+                    progressbar.css("width", percent + "%");
+                    if (options.showPercent) {
+                        progressbar.text(percent + "%");
+                    }
+                }
+            },
+            handleFormSubmission: function() {
+                var form = this.obj.parent("form");
+                form.submit(function() {
+                    pekeUpload.hasErrors = false;
+                    pekeUpload.uploadedfiles = 0;
+                    for (var i = 0; i < pekeUpload.files.length; i++) {
+                        if (pekeUpload.files[i]) {
+                            pekeUpload.upload(pekeUpload.files[i], i);
+                        } else {
+                            pekeUpload.uploadedfiles++;
+                            if (pekeUpload.uploadedfiles == pekeUpload.files.length && pekeUpload.hasErrors == false) {
+                                pekeUpload.obj.remove();
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                });
+            }
+        };
+        pekeUpload.init();
+    };
 })(jQuery);

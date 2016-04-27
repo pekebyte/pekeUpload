@@ -1,0 +1,28 @@
+{
+  "name": "pekeupload",
+  "version": "2.0.0",
+  "description": "jQuery html5 file uploader plugin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pekebyte/pekeUpload.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "uploader",
+    "file-uploader"
+  ],
+  "author": "Pedro Molina (pedrom@pekebyte.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pekebyte/pekeUpload/issues"
+  },
+  "homepage": "https://github.com/pekebyte/pekeUpload",
+  "main": "./js/pekeUpload.min.js",
+  "dependencies": {
+    "jquery":">=1.4.3"
+  }
+}
