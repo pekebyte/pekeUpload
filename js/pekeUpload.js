@@ -301,7 +301,7 @@
                         } else {
                             pekeUpload.files.splice(pos, 1);
                             var err = null;
-                            if (error in json) {
+                            if (error in data) {
                                 err = null;
                             } else {
                                 err = options.errorOnResponse;
@@ -377,7 +377,6 @@
                     return false;
                 });
             },
-            ,
             delAndRearrange: function(parent){
                 var id = parent.attr('rel');
                 pekeUpload.files.splice(parseInt(id), 1);
