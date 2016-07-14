@@ -52,9 +52,8 @@
                 ///Handle events when drag
                 if (options.dragMode) {
                     this.handledragevents();
-                } else {
-                    this.handlebuttonevents();
                 }
+                this.handlebuttonevents();
                 //Dismiss all warnings
                 $(document).on("click", ".pkwrncl", function() {
                     $(this).parent("div").remove();
