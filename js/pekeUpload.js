@@ -33,6 +33,7 @@
             data: null,
             limit: 0,
             limitError: "You have reached the limit of files that you can upload",
+            delfiletext: "Remove from queue",
             onFileError: function(file, error) {},
             onFileSuccess: function(file, data) {}
         };
@@ -100,6 +101,10 @@
             handlebuttonevents: function() {
                 $(document).on("change", this.obj, function() {
                     pekeUpload.checkFile(pekeUpload.obj[0].files[0]);
+                });
+                $(document).on('click','.pkdel',function(){
+                    var parent = $(this).parent('div').parent('div');
+                    pekeUpload.delAndRearrange(parent);
                 });
             },
             handledragevents: function() {
@@ -215,14 +220,18 @@
                         var prev = $('<div class="col-lg-2 col-md-2 col-xs-4"></div>').appendTo(newRow);
                         this.previewFile(prev, file);
                     }
-                    var finfo = $('<div class="col-lg-10 col-md-10 col-xs-10"></div>').appendTo(newRow);
+                    var finfo = $('<div class="col-lg-8 col-md-8 col-xs-8"></div>').appendTo(newRow);
                     if (options.showFilename) {
                         finfo.append('<div class="filename">' + file.name + "</div>");
                     }
-                    var progress = $('<div class="progress"><div class="pkuppbr progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;"></div></div>').appendTo(finfo);
-                    if (options.showPercent) {
-                        progress.find("div.progress-bar").text("0%");
+                    if (options.notAjax == false){
+                        var progress = $('<div class="progress"><div class="pkuppbr progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;"></div></div>').appendTo(finfo);
+                        if (options.showPercent) {
+                            progress.find("div.progress-bar").text("0%");
+                        }
                     }
+                    var dismiss = $('<div class="col-lg-2 col-md-2 col-xs-2"></div>').appendTo(newRow);
+                    $('<a href="javascript:void(0);" class="btn btn-danger pkdel">'+options.delfiletext+'</a>').appendTo(dismiss);
                     break;
 
                   case false:
@@ -235,10 +244,14 @@
                     if (options.showFilename) {
                         finfo.append('<div class="filename">' + file.name + "</div>");
                     }
-                    var progress = $('<div class="progress-pekeupload"><div class="pkuppbr bar-pekeupload pekeup-progress-bar" style="min-width: 2em;width:0%"><span></span></div></div>').appendTo(finfo);
-                    if (options.showPercent) {
-                        progress.find("div.bar-pekeupload").text("0%");
+                    if (options.notAjax == false){
+                        var progress = $('<div class="progress-pekeupload"><div class="pkuppbr bar-pekeupload pekeup-progress-bar" style="min-width: 2em;width:0%"><span></span></div></div>').appendTo(finfo);
+                        if (options.showPercent) {
+                            progress.find("div.bar-pekeupload").text("0%");
+                        }
                     }
+                    var dismiss = $('<div class="pkdelfile"></div>').appendTo(newRow);
+                    $('<a href="javascript:void(0);" class="delbutton pkdel">'+options.delfiletext+'</a>').appendTo(dismiss);
                     break;
                 }
             },
@@ -362,6 +375,15 @@
                         }
                     }
                     return false;
+                });
+            },
+            ,
+            delAndRearrange: function(parent){
+                var id = parent.attr('rel');
+                pekeUpload.files.splice(parseInt(id), 1);
+                parent.remove();
+                pekeUpload.container.find('div.pkrw').each(function(index){
+                    $(this).attr('rel',index);
                 });
             }
         };
