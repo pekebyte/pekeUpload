@@ -23,6 +23,6 @@
   "homepage": "https://github.com/pekebyte/pekeUpload",
   "main": "./js/pekeUpload.min.js",
   "dependencies": {
-    "jquery": ">=1.4.3"
+    "jquery":">=1.4.3"
   }
 }
