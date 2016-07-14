@@ -1,6 +1,6 @@
 {
   "name": "pekeupload",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "jQuery html5 file uploader plugin",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +23,6 @@
   "homepage": "https://github.com/pekebyte/pekeUpload",
   "main": "./js/pekeUpload.min.js",
   "dependencies": {
-    "jquery":">=1.4.3"
+    "jquery": ">=1.4.3"
   }
 }
