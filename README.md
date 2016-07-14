@@ -78,6 +78,7 @@ This version has been re-coded from scratch, and include new functionalities and
 | data | null | {var1:"value"} | Set POST additional data associated to the file |
 | limit | 0 | integer | Sets the limits of files that an user can uploads, 0 is unlimited |
 | limitError | "You have reached the limit of files that you can upload" | string | Sets the error message when a user tried to upload more files than the limit |
+| delfiletext | "Remove from queue" | string | Sets the default message of the button which allows to delete a file from a queue of uploads |
 |  onFileError | function(file,error){} | function(file,error){} | Event triggered when some error ocurs, returns error (string), file (object). file returns file.name and file.size |
 |  onFileSuccess | function(file,data){} | function(file,data){} | Event triggered when the file has been uploaded succesfully, returns data (string), file (object). file returns file.name and file.size |
 
