@@ -36,25 +36,27 @@ This version has been re-coded from scratch, and include new functionalities and
 4.  A server processing script for the files
 
 ###### Implementation
-
-1.  Download pekeUpload zip
-2.  Unzip pekeUpload zip
-3. Then add a reference to the jQuery library.<br />
-```
- <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-```
-4.  Below the reference to jQuery, add a reference to the pekeUpload script<br />
-```
- <script type="text/javascript" src="js/pekeUpload.js"></script>
- ```
-5.  On the page, add a file input.<br />
-```
- <input id="file" type="file" name="file" />
- ```
-7.  Initialize pekeUpload on the file input<br />
-```
-  $("#file").pekeUpload();
- ```
+1.  Download pekeUpload zip.
+2.  Unzip pekeUpload zip.
+3.  Then add a reference to the jQuery library.
+    ```
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    ```
+    
+4.  Below the reference to jQuery, add a reference to the pekeUpload script.
+    ```
+    <script type="text/javascript" src="js/pekeUpload.js"></script>
+    ```
+    
+5.  On the page, add a file input.
+    ```
+    <input id="file" type="file" name="file" />
+    ```
+    
+6.  Initialize pekeUpload on the file input.
+    ```
+    $("#file").pekeUpload();
+    ```
  
 ###### Plugin Options
 
