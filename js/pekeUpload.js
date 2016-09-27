@@ -99,7 +99,7 @@
                 this.obj.click();
             },
             handlebuttonevents: function() {
-                $(document).on("change", this.obj, function() {
+                $(document).on("change", this.obj.selector, function() {
                     pekeUpload.checkFile(pekeUpload.obj[0].files[0]);
                 });
                 $(document).on('click','.pkdel',function(){
